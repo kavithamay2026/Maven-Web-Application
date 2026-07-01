@@ -1,0 +1,31 @@
+node {
+    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([pollSCM('* * * * *')])])
+  timestamps {
+}
+  def mavenHome = tool name: 'maven3.9.15'
+    stage('CheckoutCode') {
+        git branch: 'development',
+            credentialsId: '127bfca9-5334-4d9d-83dd-2b68cdb13cee',
+            url: 'https://github.com/kavithamay2026/Maven-Web-Application.git'
+    }
+
+    stage('Build') {
+   sh "${mavenHome}/bin/mvn clean package"
+    }
+  /* 
+stage('execute sonarqube report') {
+        sh "${mavenHome}/bin/mvn clean sonar:sonar"
+ }
+   stage('upload artifact to nexus') {
+        sh "${mavenHome}/bin/mvn clean deploy"
+   }
+   
+   
+ stage ('deploying to tomcat sevrer')
+ sshagent(['2cb662f7-0d68-4256-b9a4-a9a347f1c97c']) {
+ sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.32.125:/opt/apache-tomcat-9.0.118/webapps/"  
+}
+*/
+}
+
+
